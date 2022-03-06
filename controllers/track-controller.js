@@ -86,3 +86,28 @@ exports.my_branch_in = async (req, res, next) => {
   });
   res.send(filteredmusicproject);
 };
+
+
+
+
+
+
+exports.addMusicTr = async (req, res, next) => {
+  console.log(req.body._id)
+  // let track = await Track.findOneAndUpdate(
+  //   { _id: req.body._id },
+  //   {
+  //     $set: {
+  //      MusicTr :`${req.protocol}://${req.get('host')}/upload/${req.file.filename}`
+  //     },
+  //   }
+  // );
+  const track = await Track.findOne({ _id: req.body._id });
+  try{ track.MusicTr.unshift(`${req.protocol}://${req.get('host')}/upload/${req.file.filename}`)
+       track.save();
+  }catch{
+    console.log(err)
+  }
+  
+  res.send({ track });
+};

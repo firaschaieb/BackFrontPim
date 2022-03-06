@@ -2,7 +2,11 @@ const express = require("express")
 const router = express.Router()
 const TrackController = require("../controllers/track-controller")
 const upload = require('../middlewares/storage');
+const multer = require('../multer-config')
 
+
+
+router.put("/addMusicTr",multer, TrackController.addMusicTr)
 router.route("/")
 
    .get(TrackController.getAll)

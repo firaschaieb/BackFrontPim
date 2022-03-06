@@ -28,7 +28,7 @@ const TrackSctchema = new mongoose.Schema({
 
     MusicTr: [{
         type:String,
-        required:true
+        // required:true
     }],
 
     user:{

@@ -25,11 +25,18 @@ router.get("/mp-filter",MpController.getMy_pub)
 
 
 
+//-------------------------------------------------
+router.post("/send-inv", MpController.sendConfirmationEmail)
+router.get("/confirmation/:token/:pr", MpController.confirmation)
+
+//--------------------------------------------------
 
 
-
-
-
+router.get("/create",MpController.showCreate)
+router .post( "/create",MpController.create);
+  
+  
+ 
 
 
 module.exports = router

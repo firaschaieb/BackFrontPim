@@ -1,5 +1,4 @@
 const User = require("../models/User");
-const MusicProject = require("../models/MusicProject");
 const Band = require("../models/Band");
 
 
@@ -13,19 +12,17 @@ exports.getAll = async (req, res) => {
 
   
 exports.add = async (req, res) => {
-    const { Nom, type, user,style } = req.body;
+    const { Nom, user,musicproject } = req.body;
   
-    const newband= new Band();
+    const newBand= new Band();
     
-    newband.Nom = Nom
+    newBand.Nom = Nom
+    newBand.musicproject[newBand.musicproject.length].push() = musicproject 
+    newBand.user[newBand.user.length].push() = user
   
-    newband.style = style
-    newband.user = user
-    newband.musicproject = musicproject
+    newBand.save();
   
-    newband.save();
-  
-    res.status(201).send({ message: "success", band : newband });
+    res.status(201).send({ message: "success", band: newBand });
   };
   
   exports.edit = async (req, res) => {
@@ -68,16 +65,31 @@ exports.getMy = async (req, res) => {
     res.send(musicProject);
   })
 };
-
+/*
 exports.getMy_pub = async (req, res) => {
-  console.log(req.params.id)
-
+  console.log(req.params.idk)
+ // console.log( req.body.type)
   MusicProject.find({ user: req.params.id }).exec((err,  musicProject)=>{
   
-    MusicProject.find({ type: "public" }).exec((err,  tRack)=>{
-      console.log(req.params.id)
-        res.send(tRack);
+    MusicProject.find({ musicproject:  req.params.idk }).exec((err,  musicProject)=>{
+     // console.log(req.params.id)
+        res.send(musicProject);
       })
   })
 
+};*/
+exports.getMy_pub = async (req, res, next) => {
+  const filters = req.query;
+  const mp = await MusicProject.find();
+  const filteredmusicproject = mp.filter(musicproject => {
+    let isValid = true;
+    for (key in filters) {
+      console.log(key, musicproject[key], filters[key]);
+      isValid = isValid && musicproject[key] == filters[key];
+    }
+    return isValid;
+  });
+  res.send(filteredmusicproject);
 };
+
+

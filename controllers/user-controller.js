@@ -35,7 +35,7 @@ exports.register = async (req, res) => {
 
     password,
 
-   // profilePicture,
+    //photoProfil,
 
   } = req.body;
 
@@ -46,14 +46,21 @@ exports.register = async (req, res) => {
 
     nouveauUser.username = username;
   
-    //nouveauUser.cin = cin;
+   
     nouveauUser.email = email;
-    //nouveauUser.address = address;
+    
     nouveauUser.password = await bcypt.hash(password, 10);
-   // nouveauUser.phoneNumber = phoneNumber;
-    //nouveauUser.profilePicture = profilePicture;
+   
     nouveauUser.isVerified = true;
-    //nouveauUser.role = role;
+   
+    try{
+    nouveauUser.photoProfil =`${req.protocol}://${req.get('host')}/upload/${req.file.filename}`
+   }catch{
+    nouveauUser.photoProfil ="http://localhost:3000/upload/default-profile.png"
+   }
+
+    
+    
 
     nouveauUser.save();
 
@@ -108,9 +115,7 @@ exports.loginWithSocial = async (req, res) => {
       user = new User();
       user.username = username;
       user.email = email;
-      ///user.firstName = firstName;
-      //user.lastName = lastName;
-      //user.role = "Client";
+    
       user.isVerified = true;
 
       user.save();
@@ -224,15 +229,16 @@ exports.editProfile = async (req, res) => {
 };
 
 exports.editProfilePicture = async (req, res, next) => {
+  console.log(req.body.email)
   let user = await User.findOneAndUpdate(
     { email: req.body.email },
     {
       $set: {
-        profilePicture: req.file.filename,
+       photoProfil :`${req.protocol}://${req.get('host')}/upload/${req.file.filename}`
       },
     }
   );
-
+  console.log(req.file.filename)
   res.send({ user });
 };
 

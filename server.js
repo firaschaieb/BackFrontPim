@@ -22,8 +22,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use("/api/user", require("./routes/user-route"))
 app.use("/api/musicproject", require("./routes/musicproject-route"))
 app.use("/api/track",require("./routes/track-route"))
-
-
+app.use("/api/band",require("./routes/band-route"))
+app.use('/upload', express.static(path.join(__dirname, 'upload')))
 
 
 mongoose.Promise = global.Promise

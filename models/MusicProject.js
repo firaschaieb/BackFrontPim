@@ -22,7 +22,14 @@ const MusicProjeSctchema = new mongoose.Schema({
         required:true
         //type: mongoose.Schema.Types.ObjectId,
        // ref: 'User'
-    }
+    },
+
+    userpv:[{
+        type:String,
+       // required:false
+        //type: mongoose.Schema.Types.ObjectId,
+       // ref: 'User'
+    }]
     
 },
 {
