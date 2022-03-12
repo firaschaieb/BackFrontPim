@@ -10,6 +10,12 @@ const MusicProjeSctchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    
+    photo: {
+        type: String,
+       // default: "http://localhost:3000/upload/default-profile.png",
+        required: false
+    },
 
     type:{
         type:String,// privet wala public 

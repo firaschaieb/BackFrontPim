@@ -3,12 +3,13 @@ const router = express.Router()
 const MpController = require("../controllers/musicproject-controller")
 const upload = require('../middlewares/storage');
 const MusicProject = require("../models/MusicProject");
+const multer = require('../multer-config')
 
 router.route("/")
 
     .get(MpController.getAll)
    
-    .post( MpController.add)
+    .post( multer,MpController.add)
   
     .put( MpController.edit)
   
@@ -24,6 +25,8 @@ router.get("/get-my/:id",MpController.getMy)
 router.get("/mp-filter",MpController.getMy_pub)
 
 
+//tzid taswira ll MusicPro
+router.put("/edit-profile-picture",multer, MpController.editMusicProjPicture)
 
 //-------------------------------------------------
 router.post("/send-inv", MpController.sendConfirmationEmail)
@@ -32,10 +35,6 @@ router.get("/confirmation/:token/:pr", MpController.confirmation)
 //--------------------------------------------------
 
 
-router.get("/create",MpController.showCreate)
-router .post( "/create",MpController.create);
-  
-  
  
 
 

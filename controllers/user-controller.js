@@ -27,7 +27,7 @@ exports.getUserByToken = async (req, res) => {
 
 
 exports.register = async (req, res) => {
-  console.log("1111")
+  
   const {
    username,
 

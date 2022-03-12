@@ -22,6 +22,12 @@ exports.add = async (req, res) => {
     newMusicProject.type = type 
     newMusicProject.style = style
     newMusicProject.user = user
+    try{
+      newMusicProject.photo =`${req.protocol}://${req.get('host')}/upload/${req.file.filename}`
+     }catch{
+      newMusicProject.photo ="http://localhost:3000/upload/default-profile.png"
+     }
+  
   
     newMusicProject.save();
   
@@ -82,6 +88,30 @@ exports.getMy_pub = async (req, res, next) => {
   });
   res.send(filteredmusicproject);
 };
+
+
+
+
+
+
+exports.editMusicProjPicture = async (req, res, next) => {
+  
+  let musicProject = await MusicProject.findOneAndUpdate(
+    { _id: req.body._id },
+    {
+      $set: {
+       photo :`${req.protocol}://${req.get('host')}/upload/${req.file.filename}`
+      },
+    }
+  );
+  console.log(req.file.filename)
+  res.send({ musicProject });
+};
+
+
+
+
+
 /*********************************             inv       ***************************** */
 
 
@@ -172,33 +202,3 @@ async function doSendConfirmationEmail(email, token,pr) {
   });
 }
 
-
-
-
-
-exports.showCreate= async (req,res) => {
-  res.render('confirmation');
-},
-
-
-exports.create = async (req,res)=>{
-  const { firstName, lastName, email } = req.body;
-
-  const userExist = await User.findOne({ 'email' : email });
-  if(userExist){
-      return res.json("Already registred email");
-  }
-
-  const user = new User({
-      firstName,
-      lastName,
-      email
-  });
-
-  if(req.file){
-      user.image = req.file.filename;
-  }
-  await user.save();
-  console.log(User._id)
-  res.redirect('/users');
-}

@@ -8,18 +8,23 @@ const BandSchema = new mongoose.Schema({
         required: true
     },
  
-
+  
+    photo: {
+        type: String,
+       // default: "http://localhost:3000/upload/default-profile.png",
+        required: false
+    },
 
     musicproject:[{
         type:String,
-        required:true
+        required:false
        
     }],
  
 
     user:[{
         type:String,
-        required:true
+        required:false
         //type: mongoose.Schema.Types.ObjectId,
        // ref: 'User'
     }]

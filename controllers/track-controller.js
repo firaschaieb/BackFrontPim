@@ -26,10 +26,18 @@ exports.add = async (req, res) => {
     newTrack.tempo=tempo
     newTrack.musicProject=musicProject
     newTrack.user = user
-  
-    newTrack.save();
-  
-    res.status(201).send({ message: "success", track: newTrack });
+     
+    const musicproject = await MusicProject.findOne({ _id: musicProject });
+    if (musicproject.userpv.includes(user )){
+      newTrack.save()
+      res.status(201).send({ message: "success", track: newTrack });
+    }else{
+      res.status(403).send({ message: "you need an inv" });
+    }
+    
+    console.log(musicProject)
+    console.log(user)
+    
   };
 
   exports.delete = async (req, res) => {
@@ -94,20 +102,13 @@ exports.my_branch_in = async (req, res, next) => {
 
 exports.addMusicTr = async (req, res, next) => {
   console.log(req.body._id)
-  // let track = await Track.findOneAndUpdate(
-  //   { _id: req.body._id },
-  //   {
-  //     $set: {
-  //      MusicTr :`${req.protocol}://${req.get('host')}/upload/${req.file.filename}`
-  //     },
-  //   }
-  // );
+
   const track = await Track.findOne({ _id: req.body._id });
   try{ track.MusicTr.unshift(`${req.protocol}://${req.get('host')}/upload/${req.file.filename}`)
        track.save();
   }catch{
     console.log(err)
   }
-  
+  console.log(track)
   res.send({ track });
 };

@@ -10,7 +10,7 @@ router.put("/addMusicTr",multer, TrackController.addMusicTr)
 router.route("/")
 
    .get(TrackController.getAll)
-   
+   .delete( TrackController.delete)
     .post( TrackController.add)
   
     .put( TrackController.edit)
@@ -25,7 +25,7 @@ router.get("/get-my/:id",TrackController.getMy)
 //ta3tik les branch mta3 el rep
 router.get("/get-branch-of/:id",TrackController.branch_of)
 
-//      ta3malek filter kima t7eb just zid & esm el param = val    --->       Localhost:3000/api/track/track-filter?musicProject=621f81c23395fb8a838d6e86&user=555
+//      ta3malek filter kima t7eb just zid & esm el param = val    --->       Localhost:3000/api/track/track-filter?musicProject=621f81c23395fb8a838d6e86
 
 router.get("/track-filter",TrackController.my_branch_in)
 
