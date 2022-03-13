@@ -202,3 +202,35 @@ async function doSendConfirmationEmail(email, token,pr) {
   });
 }
 
+
+//----------------------------------------       fasa5 user ml musicproj      ---------------------------------------------------
+
+exports.deleteuser = async (req, res) => {
+  const band = await MusicProject.findById(req.body._id)
+  
+  if (band){
+    var k=0;
+  for( var i = 0; i < band.user.length; i++){ 
+    
+    if ( band.userpv[i] === req.body.user) { 
+      console.log(req.body.user)
+      band.userpv.splice(i, 1); 
+      k++;
+
+    }
+  
+  } 
+  if(k===0){
+  res.status(201).send({ message: "user not found"
+});
+}else{
+  band.save();
+  res.status(201).send({ message: "success", band: band });
+
+  }
+ }else{
+
+ 
+      res.send({ message: "MusicProj not found" });
+}
+};

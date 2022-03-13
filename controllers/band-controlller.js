@@ -38,32 +38,29 @@ exports.add = async (req, res) => {
     res.status(201).send({ message: "success", band: newBand });
   };
   
-  exports.editProfilePicture = async (req, res, next) => {
-    console.log(req.body.email)
+  exports.editBandPicture = async (req, res, next) => {
     let band = await Band.findOneAndUpdate(
-      { email: req.body.email },
+      { _id: req.body._id },
       {
         $set: {
-         photoProfil :`${req.protocol}://${req.get('host')}/upload/${req.file.filename}`
+         photo :`${req.protocol}://${req.get('host')}/upload/${req.file.filename}`
         },
       }
     );
     console.log(req.file.filename)
     res.send({ band });
   };
+  
 
 
   exports.edit = async (req, res) => {
     const { _id, style, type, Nom,  } = req.body;
   
-    let musicproject = await MusicProject.findOneAndUpdate(
+    let musicproject = await Band.findOneAndUpdate(
       { _id: _id },
       {
         $set: {
           Nom:Nom,
-          style:style,
-         type :type ,
-       
         },
       }
     );
@@ -71,12 +68,12 @@ exports.add = async (req, res) => {
   };
   
   exports.delete = async (req, res) => {
-    const musicproject = await MusicProject.findById(req.body._id).remove();
-    res.status(201).send({ message: "success", musicproject: musicproject });
+    const band = await Band.findById(req.body._id).remove();
+    res.status(201).send({ message: "success", band: band });
   };
   
   exports.deleteAll = async (req, res) => {
-    MusicProject.remove({}, function (err, musicproject) {
+    Band.remove({}, function (err,band) {
       if (err) {
         return handleError(res, err);
       }
@@ -88,37 +85,25 @@ exports.add = async (req, res) => {
   
 exports.getMy = async (req, res) => {
 
-  MusicProject.find({ user: req.params.id }).exec((err,  musicProject)=>{
+  Band.find({ user: req.params.id }).exec((err,  band)=>{
     
-    res.send(musicProject);
+    res.send(band);
   })
 };
-/*
-exports.getMy_pub = async (req, res) => {
-  console.log(req.params.idk)
- // console.log( req.body.type)
-  MusicProject.find({ user: req.params.id }).exec((err,  musicProject)=>{
-  
-    MusicProject.find({ musicproject:  req.params.idk }).exec((err,  musicProject)=>{
-     // console.log(req.params.id)
-        res.send(musicProject);
-      })
-  })
 
-};*/
-exports.getMy_pub = async (req, res, next) => {
-  const filters = req.query;
-  const mp = await MusicProject.find();
-  const filteredmusicproject = mp.filter(musicproject => {
-    let isValid = true;
-    for (key in filters) {
-      console.log(key, musicproject[key], filters[key]);
-      isValid = isValid && musicproject[key] == filters[key];
-    }
-    return isValid;
-  });
-  res.send(filteredmusicproject);
-};
+// exports.getMy_pub = async (req, res, next) => {
+//   const filters = req.query;
+//   const mp = await MusicProject.find();
+//   const filteredmusicproject = mp.filter(musicproject => {
+//     let isValid = true;
+//     for (key in filters) {
+//       console.log(key, musicproject[key], filters[key]);
+//       isValid = isValid && musicproject[key] == filters[key];
+//     }
+//     return isValid;
+//   });
+//   res.send(filteredmusicproject);
+// };
 
 
 ///--------------------------------   inv-------------------------------------------
@@ -234,3 +219,38 @@ async function doSendConfirmationEmail(email, token,pr) {
   });
 }
 
+
+
+
+
+//----------------------------------------       fasa5 user ml band      ---------------------------------------------------
+exports.deleteuser = async (req, res) => {
+  const band = await Band.findById(req.body._id)
+  
+  if (band){
+    var k=0;
+  for( var i = 0; i < band.user.length; i++){ 
+    
+    if ( band.user[i] === req.body.user) { 
+      console.log(req.body.user)
+      band.user.splice(i, 1); 
+      k++;
+
+    }
+  
+  } 
+  if(k===0){
+  //band.save();
+  res.status(201).send({ message: "user not found"
+});
+}else{
+  band.save();
+  res.status(201).send({ message: "success", band: band });
+
+  }
+ }else{
+
+ 
+      res.send({ message: "band not found" });
+}
+};

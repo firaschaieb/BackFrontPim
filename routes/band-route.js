@@ -12,20 +12,20 @@ router.route("/")
    
     .post(multer, bandController.add)
   
-   /* .put( bandController.edit)
+   .put( bandController.edit)
   
     .delete(bandController.delete)
   
 router.delete("/all", bandController.deleteAll)
 
-// tafichilek les  repo el kol  mta3 el user 
+// tafichilek les  band el kol  mta3 el user 
 router.get("/get-my/:id",bandController.getMy)
 
 
-// tafichilek les  repo el public mta3 el user   localhost:3000/api/musicproject/get-my-public?type=public&user=123   
-router.get("/band-filter",bandController.getMy_pub)
+//tzid taswira ll MusicPro
 
-*/
+router.put("/edit-Music-picture",multer, bandController.editBandPicture)
+
 
 
 
@@ -37,5 +37,5 @@ router.get("/confirmation/:token/:pr", bandController.confirmation)
 
 //--------------------------------------------------
 
-
+router.delete("/get",bandController.deleteuser)
 module.exports = router

@@ -56,6 +56,7 @@ exports.register = async (req, res) => {
     try{
     nouveauUser.photoProfil =`${req.protocol}://${req.get('host')}/upload/${req.file.filename}`
    }catch{
+   
     nouveauUser.photoProfil ="http://localhost:3000/upload/default-profile.png"
    }
 
@@ -64,15 +65,15 @@ exports.register = async (req, res) => {
 
     nouveauUser.save();
 
-    const token = jwt.sign({ email: email }, config.token_secret, {
+    const token = jwt.sign({ nouveauUser:nouveauUser }, config.token_secret, {
       expiresIn: "36000000",
     });
 
-    doSendConfirmationEmail(email, token);
+   // doSendConfirmationEmail(email, token);
 
     res.status(201).send({
       message: "success",
-      user: nouveauUser,
+      //user: nouveauUser,
       token: jwt.verify(token, config.token_secret),
     });
   }
@@ -84,13 +85,13 @@ exports.login = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await bcypt.compare(password, user.password))) {
-    const token = jwt.sign({ email: email }, config.token_secret, {
-      expiresIn: "36000000",
+    const token = jwt.sign({ user: user }, config.token_secret, {
+     
     });
 
     if (user.isVerified) {
       console.log("1111111")
-      res.status(200).send({ token, user, message: "Success" });
+      res.status(200).send({ token, message: "Success" });
       
     } else {
       res.status(200).send({ user, message: "Email not verified" });

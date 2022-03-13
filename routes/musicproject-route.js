@@ -26,7 +26,7 @@ router.get("/mp-filter",MpController.getMy_pub)
 
 
 //tzid taswira ll MusicPro
-router.put("/edit-profile-picture",multer, MpController.editMusicProjPicture)
+router.put("/edit-Music-picture",multer, MpController.editMusicProjPicture)
 
 //-------------------------------------------------
 router.post("/send-inv", MpController.sendConfirmationEmail)
@@ -37,5 +37,6 @@ router.get("/confirmation/:token/:pr", MpController.confirmation)
 
  
 
+router.delete("/user-out",MpController.deleteuser)
 
 module.exports = router
