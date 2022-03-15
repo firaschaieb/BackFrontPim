@@ -15,8 +15,8 @@ class _SignupState extends State<Signup> {
   late String? _username;
   late String? _email;
   late String? _password;
-  late String? _firstName;
-  late String? _lastName;
+
+
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
 
   final String _baseUrl = "10.0.2.2:3000";
@@ -43,7 +43,27 @@ class _SignupState extends State<Signup> {
             SizedBox(
               height: 20,
             ),
-
+            Container(
+              margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+              child: TextFormField(
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(), labelText: "FirstName"),
+                onSaved: (String? value) {
+                  _username = value;
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "firstname ne doit pas etre vide";
+                  }
+                  else if (value.length < 5) {
+                    return "firstname doit avoir au moins 5 caractères";
+                  }
+                  else {
+                    return null;
+                  }
+                },
+              ),
+            ),
             Container(
               margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
               child: TextFormField(
@@ -89,48 +109,8 @@ class _SignupState extends State<Signup> {
                 },
               ),
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "FirstName"),
-                onSaved: (String? value) {
-                  _firstName = value;
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "firstname ne doit pas etre vide";
-                  }
-                  else if (value.length < 5) {
-                    return "firstname doit avoir au moins 5 caractères";
-                  }
-                  else {
-                    return null;
-                  }
-                },
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "LastName"),
-                onSaved: (String? value) {
-                  _lastName = value;
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "lastname ne doit pas etre vide";
-                  }
-                  else if (value.length < 5) {
-                    return "lastname doit avoir au moins 5 caractères";
-                  }
-                  else {
-                    return null;
-                  }
-                },
-              ),
-            ),
+
+
             Container(
               margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
               child: ElevatedButton(
@@ -138,40 +118,43 @@ class _SignupState extends State<Signup> {
                   primary: Colors.deepOrangeAccent, // background
                 ),
                 child: const Text("Confirm !"),
-                onPressed: () {
-                  if (_keyForm.currentState!.validate()) {
+                onPressed: ()  async {
+                  if(_keyForm.currentState!.validate()) {
                     _keyForm.currentState!.save();
 
-                    Map<String, dynamic> userData = {
-                      // "profilePicture": _username,
-                      "password": _password,
-                      "email": _email,
-                      "lastName": _lastName,
-                      "firstName": _firstName
-                    };
 
-                    Map<String, String> headers = {
-                      "Content-Type": "application/json; charset=UTF-8"
-                    };
+                  Map<String, String> headers = {
+                    "Content-Type": "application/json; charset=UTF-8"
+                  };
+                    String filepath;
+                    var request = new http.MultipartRequest('POST',Uri.http( _baseUrl,"/api/user/register"));
+                    var stream = new http.ByteStream(_imageFile!.openRead());
+                    stream.cast();
 
-                    http.post(Uri.http(_baseUrl, "/api/user/register"),
-                        headers: headers, body: json.encode(userData))
-                        .then((http.Response response) {
-                      if (response.statusCode == 201) {
-                        Navigator.pushReplacementNamed(context, "/");
-                      }
-                      else {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const AlertDialog(
-                                title: Text("Information"),
-                                content: Text(
-                                    "Une erreur s'est produite. Veuillez réessayer !"),
-                              );
-                            });
-                      }
+                    final file = await http.MultipartFile.fromPath('photos', _imageFile!.path);
+
+                    request.fields['username']=_username.toString();
+                    request.fields['password']=_password.toString();
+                    request.fields['email']=_email.toString();
+                    request.files.add(file);
+                    request.headers.addAll({"Content-Type": "multipart/form-data",
                     });
+                    //body: json.encode(userData);
+                    var response = await request.send();
+                    if (response.statusCode == 201) {
+                      Navigator.pushReplacementNamed(context, "/");
+                    }
+                    else {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const AlertDialog(
+                              title: Text("Information"),
+                              content: Text(
+                                  "Une erreur s'est produite. Veuillez réessayer !"),
+                            );
+                          });
+                    }
                   }
                 },
               ),
@@ -180,6 +163,7 @@ class _SignupState extends State<Signup> {
         ),
       ),
     );
+
   }
 
   Widget imageProfile() {

@@ -35,7 +35,7 @@ class _MusicHomeState extends State<MusicHome> {
 
     for(int i = 0; i < gamesFromServer.length; i++) {
       Map<String, dynamic> gameFromServer = gamesFromServer[i];
-      _products.add(Product(gameFromServer["Nom"], gameFromServer["style"], gameFromServer["type"],gameFromServer["_id"],));
+      _products.add(Product(gameFromServer["Nom"], gameFromServer["style"], gameFromServer["type"], gameFromServer["photo"],gameFromServer["_id"],));
     }
 
     return true;
@@ -56,8 +56,8 @@ class _MusicHomeState extends State<MusicHome> {
         if(snapshot.hasData) {
           return ListView.builder(
             itemCount: _products.length,
-            itemBuilder: (BuildContext context,int index) {
-              return MusicInfo(_products[index].Nom, _products[index].style, _products[index].type,_products[index].id,);
+            itemBuilder: (BuildContext context,int index, ) {
+              return MusicInfo(_products[index].Nom, _products[index].style, _products[index].type, _products[index].image,_products[index].id,);
             },
           );
         }

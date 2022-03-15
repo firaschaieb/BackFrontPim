@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-
+import 'dart:convert';
 class TrackInfo extends StatefulWidget {
-  final String _id;
-  final String _nom;
+
+  final String _Nom;
   final String _instrument;
   final String _key;
   final String _measure;
   final String _tempo;
   final String _MusicTr;
+  final String _musicProject;
 
 
-  TrackInfo(this._id, this._nom, this._instrument, this._key, this._measure,
-      this._tempo, this._MusicTr);
+  final String _id;
+
+  TrackInfo(  this._Nom, this._instrument, this._key, this._measure, this._tempo, this._musicProject,this._MusicTr,this._id,);
 
   @override
   _TrackInfoState createState() => _TrackInfoState();
 }
 
 class _TrackInfoState extends State<TrackInfo> {
+  String musicProject = "";
   final String _baseUrl = "10.0.2.2:3000";
   @override
   Widget build(BuildContext context) {
@@ -27,13 +30,17 @@ class _TrackInfoState extends State<TrackInfo> {
       child: InkWell(
         onTap: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString("_id", widget._id );
-          prefs.setString("nom", widget._nom);
+
+          prefs.setString("Nom", widget._Nom);
           prefs.setString("instrument", widget._instrument);
           prefs.setString("key", widget._key);
           prefs.setString("measure", widget._measure);
           prefs.setString("tempo", widget._tempo);
-          prefs.setString("MusicTr", widget._MusicTr);
+          prefs.setString("MusicTr", widget._MusicTr );
+          prefs.setString("musicProject", widget._musicProject );
+          prefs.setString("_id1", widget._id );
+print("22222222222222");
+print(widget._Nom);
 
           //Navigator.pushNamed(context, "/Track");
         },
@@ -48,9 +55,12 @@ class _TrackInfoState extends State<TrackInfo> {
                   Map<String, String> headers = {
                     "Content-Type": "application/json; charset=UTF-8"
                   };
+                  Map<String, dynamic> userData = {
+                    "_id1": widget._id,
 
+                  };
                   http.delete(
-                    Uri.http(_baseUrl, "/api/musicproject/"+widget._id), headers: headers,)
+                    Uri.http(_baseUrl, "/api/track/"), headers: headers,body: json.encode(userData))
                       .then((http.Response response) {
                     if (response.statusCode == 201) {
                       //Navigator.pushReplacementNamed(context, "/");
@@ -77,7 +87,7 @@ class _TrackInfoState extends State<TrackInfo> {
             ),
             Column(
               children: [
-                Text(widget._nom),
+                Text(widget._Nom),
                 const SizedBox(
                   height: 10,
                 ),
@@ -86,8 +96,10 @@ class _TrackInfoState extends State<TrackInfo> {
                   height: 10,
                 ),
                 Text(widget._key),
+
               ],
             ),
+
 
           ],
         ),
@@ -97,19 +109,21 @@ class _TrackInfoState extends State<TrackInfo> {
   }
 }
 class Product1 {
-  final String id;
-  final String nom;
+
+
+  final String Nom;
   final String instrument;
   final String key;
   final String measure;
   final String tempo;
   final String MusicTr;
+  final String musicProject;
+  final String id;
 
-  Product1(this.id, this.nom, this.instrument, this.key, this.measure,
-      this.tempo, this.MusicTr);
+  Product1( this.Nom, this.instrument, this.key, this.measure, this.tempo, this.MusicTr, this.musicProject,this.id);
 
   @override
   String toString() {
-    return 'Product1{id: $id, nom: $nom, instrument: $instrument, key: $key, measure: $measure, tempo: $tempo, MusicTr: $MusicTr}';
+    return 'Product1{Nom: $Nom, instrument: $instrument, key: $key, measure: $measure, tempo: $tempo, MusicTr: $MusicTr, musicProject: $musicProject, id: $id}';
   }
 }

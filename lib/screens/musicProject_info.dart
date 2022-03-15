@@ -6,10 +6,11 @@ class MusicInfo extends StatefulWidget {
   final String _Nom;
   final String _style;
   final String _type;
+  final String _image;
   final String _id;
 
 
-  MusicInfo(this._Nom, this._style, this._type, this._id);
+  MusicInfo(this._Nom, this._style, this._type, this._id, this._image);
 
   @override
   State<MusicInfo> createState() => _MusicInfoState();
@@ -32,8 +33,10 @@ class _MusicInfoState extends State<MusicInfo> {
           prefs.setString("Nom", widget._Nom);
           prefs.setString("style", widget._style);
           prefs.setString("type", widget._type);
+          prefs.setString("photo", widget._image);
           prefs.setString("_id", widget._id );
-          Navigator.pushNamed(context, "/Track");
+          Navigator.pushNamed(context, "/TrackH");
+          //print("111111111111111111");
         },
 
         child: Row(
@@ -41,16 +44,21 @@ class _MusicInfoState extends State<MusicInfo> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             InkWell(
-                child: const Icon(Icons.restore_from_trash_rounded, size: 50,),
+                child: const Icon(Icons.restore_from_trash_rounded, size: 50,color: Colors.teal),
                 onTap: () async {
                   Map<String, String> headers = {
                     "Content-Type": "application/json; charset=UTF-8"
                   };
+                  Map<String, dynamic> userData = {
+                    "_id": widget._id,
 
+                  };
                   http.delete(
-                    Uri.http(_baseUrl, "/api/musicproject/"+widget._id), headers: headers,)
+                    Uri.http(_baseUrl, "/api/musicproject/"), headers: headers,body: json.encode(userData))
                       .then((http.Response response) {
                     if (response.statusCode == 201) {
+                      final body =jsonDecode(response.body);
+
                       //Navigator.pushReplacementNamed(context, "/");
                     }
                     else {
@@ -68,18 +76,20 @@ class _MusicInfoState extends State<MusicInfo> {
                 }
             ),
             Container(
+                margin: const EdgeInsets.fromLTRB(10, 10, 20, 10),
+                child: Image.network(widget._image,
+                    width: 120, height: 120)),
 
-            ),
             const SizedBox(
               height: 10,
             ),
             Column(
               children: [
-                Text(widget._Nom),
+                Text(widget._Nom,style:TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold), textScaleFactor: 2),
                 const SizedBox(
                   height: 10,
                 ),
-                Text(widget._style, textScaleFactor: 2),
+                Text(widget._style,),
                 const SizedBox(
                   height: 10,
                 ),
@@ -100,12 +110,13 @@ class Product {
   final String Nom;
   final String style;
   final String type;
+  final String image;
   final String id;
 
-  Product(this.Nom, this.style, this.type, this.id);
+  Product(this.Nom, this.style, this.type, this.id, this.image);
 
   @override
   String toString() {
-    return 'Product{Nom: $Nom, style: $style, type: $type, id: $id}';
+    return 'Product{Nom: $Nom, style: $style, type: $type, image: $image, id: $id}';
   }
 }

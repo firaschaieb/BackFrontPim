@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:online_course/screens/track_info.dart';
 import 'dart:convert';
-import 'musicProject_info.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TrackHome extends StatefulWidget {
@@ -13,21 +13,38 @@ class TrackHome extends StatefulWidget {
 }
 
 class _TrackHomeState extends State<TrackHome> {
+  String id = "";
+
   late Future<bool> fetchtrack;
 
   final List<Product1> _products1 = [];
   final String _baseUrl = "10.0.2.2:3000";
   Future<bool> Trackfet() async {
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    http.Response response = await http.get(Uri.http(_baseUrl, "/api/musicproject/get-my/"));
+    setState((){
+      id = prefs.getString("_id")!;
+      //_id = prefs.getString("ObjectId")!;
+    });
+    http.Response response = await http.get(Uri.http(_baseUrl, "/api/track/get-my/"+id));
 
-    List<dynamic> gamesFromServer = json.decode(response.body);
+    List<dynamic> S= json.decode(response.body);
 
-    for(int i = 0; i < gamesFromServer.length; i++) {
-      Map<String, dynamic> gameFromServer = gamesFromServer[i];
-      _products1.add(Product1(gameFromServer["_id"], gameFromServer["nom"], gameFromServer["instrument"],gameFromServer["key"],gameFromServer["measure"],gameFromServer["tempo"],gameFromServer["MusicTr"],));
+
+
+
+    for(int i = 0; i < S.length; i++) {
+      Map<String, dynamic> Server = S[i];
+      //print(S[i]);
+     // print(Server["Nom"]);
+      //print(Server["instrument"]);
+      //print(Server["key"]);
+      print(Server["measure"].toString());
+      _products1.add(Product1( Server["Nom"].toString(), Server["instrument"].toString(),Server["key"].toString(),Server["measure"].toString(),Server["tempo"].toString(), Server["MusicTr"].toString(), Server["musicProject"].toString(),Server["_id"].toString()));
+print(_products1);
     }
+    print(_products1[0].Nom);
 
     return true;
   }
@@ -39,23 +56,25 @@ class _TrackHomeState extends State<TrackHome> {
   }
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: fetchtrack,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if(snapshot.hasData) {
-          return ListView.builder(
-            itemCount: _products1.length,
-            itemBuilder: (BuildContext context,int index) {
-              return MusicInfo(_products1[index].id, _products1[index].nom, _products1[index].instrument,_products1[index].key,);
-            },
-          );
-        }
-        else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+    return Scaffold(
+      body: FutureBuilder(
+        future: fetchtrack,
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if(snapshot.hasData) {
+            return ListView.builder(
+              itemCount: _products1.length,
+              itemBuilder: (BuildContext context,int index) {
+                return TrackInfo( _products1[index].Nom, _products1[index].instrument,_products1[index].key,_products1[index].measure,_products1[index].tempo,_products1[index].MusicTr,_products1[index].musicProject,_products1[index].id);
+              },
+            );
+          }
+          else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
     );
   }
 }

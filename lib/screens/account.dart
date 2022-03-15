@@ -4,7 +4,7 @@ import 'package:online_course/utils/data.dart';
 import 'package:online_course/widgets/custom_image.dart';
 import 'package:online_course/widgets/setting_box.dart';
 import 'package:online_course/widgets/setting_item.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class AccountPage extends StatefulWidget {
   const AccountPage({ Key? key }) : super(key: key);
 
@@ -13,6 +13,17 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  String token = "";
+  void gettoken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState((){
+      token = prefs.getString("key")!;
+    });
+  }
+  void initState() {
+    super.initState();
+    gettoken();
+  }
    @override
   Widget build(BuildContext context) {
     return 
@@ -102,7 +113,7 @@ class _AccountPageState extends State<AccountPage> {
                   leadingIcon: "assets/icons/setting.svg",
                   bgIconColor: blue, 
                   onTap: (){
-                    
+                    Navigator.pushNamed(context, "/update");
                   },
                 ),
                 Padding(
@@ -189,7 +200,11 @@ class _AccountPageState extends State<AccountPage> {
                 SettingItem(title: "Log Out", 
                   leadingIcon: "assets/icons/logout.svg",
                   bgIconColor: darker, 
-                  onTap: (){
+                  onTap: ()async{
+                    SharedPreferences preferences =
+                        await SharedPreferences.getInstance();
+                    await preferences.clear();
+                    Navigator.pushNamed(context, "/");
                   },
                 ),
               ]
