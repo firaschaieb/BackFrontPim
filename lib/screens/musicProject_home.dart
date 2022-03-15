@@ -14,7 +14,7 @@ class MusicHome extends StatefulWidget {
 }
 
 class _MusicHomeState extends State<MusicHome> {
-  String token = "";
+  String _id = "";
   //String _id = "";
   late Future<bool> fetchedGames;
 
@@ -26,10 +26,10 @@ class _MusicHomeState extends State<MusicHome> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     setState((){
-      token = prefs.getString("key")!;//_id = prefs.getString("ObjectId")!;
+      _id = prefs.getString("key")!;//_id = prefs.getString("ObjectId")!;
     });
 
-    http.Response response = await http.get(Uri.http(_baseUrl, "/api/musicproject/get-my/"+token));
+    http.Response response = await http.get(Uri.http(_baseUrl, "/api/musicproject/get-my/"+_id));
 
     List<dynamic> gamesFromServer = json.decode(response.body);
 

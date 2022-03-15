@@ -35,7 +35,7 @@ class _MusicInfoState extends State<MusicInfo> {
           prefs.setString("type", widget._type);
           prefs.setString("photo", widget._image);
           prefs.setString("_id", widget._id );
-          Navigator.pushNamed(context, "/TrackH");
+          Navigator.pushNamed(context, "/THome");
           //print("111111111111111111");
         },
 

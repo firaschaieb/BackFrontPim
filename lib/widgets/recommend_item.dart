@@ -1,17 +1,42 @@
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:online_course/theme/color.dart';
 import 'package:online_course/widgets/custom_image.dart';
+import 'package:online_course/screens/musicProject_info.dart';
+class RecommendItem extends StatefulWidget {
+  final String _Nom;
+  final String _style;
+  final String _type;
+  final String _image;
+  final String _id;
 
-class RecommendItem extends StatelessWidget {
-  RecommendItem({ Key? key, required this.data, this.onTap}) : super(key: key);
-  final data;
-  final GestureTapCallback? onTap;
+
+  RecommendItem(this._Nom, this._style, this._type, this._image, this._id);
+  final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+
+  @override
+  State<RecommendItem> createState() => _RecommendItemState();
+}
+
+class _RecommendItemState extends State<RecommendItem> {
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+
+      onTap:  () async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        prefs.setString("Nom", widget._Nom);
+        prefs.setString("style", widget._style);
+        prefs.setString("type", widget._type);
+        prefs.setString("photo", widget._image);
+        prefs.setString("_id", widget._id );
+        Navigator.pushNamed(context, "/TrackH");
+        //print("111111111111111111");
+      },
       child: Container(
           margin: EdgeInsets.only(right: 10),
           padding: EdgeInsets.all(10),
@@ -29,37 +54,61 @@ class RecommendItem extends StatelessWidget {
             ],
           ),
           child: Row(
+
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomImage(data["image"],
-                radius: 15,
-                height: 80,
+
+              Image.network(widget._image,
+                width: 40,
+                height: 70,
               ),
               SizedBox(width: 10,),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(data["name"], maxLines: 1, overflow: TextOverflow.ellipsis, 
-                    style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w600),
+                  Text(widget._Nom, maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: textColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
                   ),
                   SizedBox(height: 5,),
-                  Text(data["price"], style: TextStyle(fontSize: 14, color: textColor),),
+                  Text(widget._type,
+                    style: TextStyle(fontSize: 14, color: textColor),),
                   SizedBox(height: 15,),
                   Row(
                     children: [
-                      Icon(Icons.schedule_rounded, color: labelColor, size: 14,), 
+                      Icon(Icons.schedule_rounded, color: labelColor,
+                        size: 14,),
                       SizedBox(width: 2,),
-                      Text(data["duration"], style: TextStyle(fontSize: 12, color: labelColor),),
+                      Text(widget._style, style: TextStyle(
+                          fontSize: 12, color: labelColor),),
                       SizedBox(width: 20,),
-                      Icon(Icons.star, color: orange, size: 14,), 
+                      Icon(Icons.star, color: orange, size: 14,),
                       SizedBox(width: 2,),
-                      Text(data["review"], style: TextStyle(fontSize: 12, color: labelColor),)
+
                     ],
                   )
                 ],
               )
             ],
           )
-        ),
+      ),
     );
+  }
+}
+class rec {
+  final String Nom;
+  final String style;
+  final String type;
+  final String image;
+  final String id;
+
+  rec(this.Nom, this.style, this.type, this.id, this.image);
+
+  @override
+  String toString() {
+    return 'rec{Nom: $Nom, style: $style, type: $type, image: $image, id: $id}';
   }
 }

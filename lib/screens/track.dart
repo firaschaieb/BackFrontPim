@@ -18,26 +18,33 @@ class _TrackState extends State<Track> {
   late String? _tempo;
   late String? _MusicTr;
   String id = "";
+  String _id = "";
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
   final String _baseUrl = "10.0.2.2:3000";
   @override
   void initState() {
     super.initState();
     getid();
+    gettoken();
+  }
+  void gettoken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState((){
+      _id = prefs.getString("key")!;
+    });
   }
   void getid() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState((){
       id = prefs.getString("_id")!;
+
     });
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: AppBar(
-        title: const Text("creatMusicProject"),
-      ),
+
       body: Form(
         key: _keyForm,
         child: ListView(
@@ -172,17 +179,22 @@ class _TrackState extends State<Track> {
                         "measure" : _measure,
                         "tempo" : _tempo,
                         "MusicTr" : _MusicTr,
-                        "musicProject" : id,
+                        "user" : _id,
+                        "musicProject" : id
 
                       };
 
                       Map<String, String> headers = {
                         "Content-Type": "application/json; charset=UTF-8"
                       };
-
+                      print(_id);
+                      print(id);
                       http.post(Uri.http(_baseUrl, "/api/track/"), headers: headers, body: json.encode(userData))
                           .then((http.Response response) {
                         if(response.statusCode == 201) {
+                          print(_id);
+                          print(id);
+
                           //Navigator.pushReplacementNamed(context, "/");
                         }
                         else {

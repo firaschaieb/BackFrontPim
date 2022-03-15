@@ -1,4 +1,6 @@
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:online_course/theme/color.dart';
@@ -7,6 +9,7 @@ import 'package:online_course/widgets/category_box.dart';
 import 'package:online_course/widgets/feature_item.dart';
 import 'package:online_course/widgets/notification_box.dart';
 import 'package:online_course/widgets/recommend_item.dart';
+import 'musicProject_info.dart';
 class HomePage extends StatefulWidget {
   const HomePage({ Key? key }) : super(key: key);
 
@@ -15,6 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,26 +148,68 @@ class _HomePageState extends State<HomePage> {
         )
       );
   }
+  String _id = "";
+  //String _id = "";
+  late Future<bool> fetched;
 
-  getRecommend(){
-    return
-    SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: List.generate(recommends.length, (index) => 
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: RecommendItem(
-                data: recommends[index],
-                onTap: (){
-                  
-                },
-              )
-            ) 
-          )
-        ),
-      );
+  final List<rec> _products = [];
+  final String _baseUrl = "10.0.2.2:3000";
+
+  Future<bool> fetch() async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState((){
+      _id = prefs.getString("key")!;//_id = prefs.getString("ObjectId")!;
+    });
+
+    http.Response response = await http.get(Uri.http(_baseUrl, "/api/musicproject/get-my/"+_id));
+
+    List<dynamic> games = json.decode(response.body);
+
+    for(int i = 0; i < games.length; i++) {
+      Map<String, dynamic> game = games[i];
+      _products.add(rec(game["Nom"], game["style"], game["type"], game["photo"],game["_id"],));
+    }
+
+    return true;
   }
 
+  @override
+  void initState() {
+    fetched = fetch();
+    super.initState();
+
+  }
+
+  getRecommend() {
+
+    return FutureBuilder(
+        future: fetched,
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.hasData) {
+            return
+              SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
+                scrollDirection: Axis.horizontal,
+                child:  Row(
+                    children: List.generate(_products.length, (index) =>
+                        Padding(
+
+                            padding: const EdgeInsets.only(right: 10),
+                            child: RecommendItem(_products[index].Nom, _products[index].style, _products[index].type, _products[index].image,_products[index].id,)
+                        )
+                    )
+                ),
+              );
+          }
+          else {
+          return const Center(
+          child: CircularProgressIndicator(),
+          );
+          }
+
+        }
+    );
+  }
 }

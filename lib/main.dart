@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_course/screens/musicProject_home.dart';
 import 'package:online_course/screens/track_home.dart';
+import 'package:online_course/screens/track_office.dart';
 import 'package:online_course/signin_signup/update.dart';
 import 'screens/root_app.dart';
 import 'theme/color.dart';
@@ -39,6 +40,8 @@ class MyApp extends StatelessWidget {
         },
         "/TrackH": (BuildContext context) {
           return const TrackHome();
+        },"/THome": (BuildContext context) {
+          return const MyTrackHome();
         },
 
         "/update": (BuildContext context) {

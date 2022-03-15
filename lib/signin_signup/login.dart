@@ -115,10 +115,10 @@ class _LoginState extends State<Login> {
                     if(response.statusCode == 200) {
 
                       final body =jsonDecode(response.body);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("token : ${body['token']}")));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("_id : ${body['_id']}")));
 
 
-                      pageRoute(body['token'],);
+                      pageRoute(body['_id'],);
                       Navigator.pushNamed(context, "/home");
 
 
@@ -185,9 +185,9 @@ class _LoginState extends State<Login> {
     );
   }
 }
-void pageRoute(String token) async {
+void pageRoute(String _id) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString("key", token );
+  await prefs.setString("key", _id );
 
 
 }

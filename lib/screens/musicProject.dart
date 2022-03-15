@@ -19,7 +19,7 @@ class _MusicProjectState extends State<MusicProject> {
   late String? _nom;
   late String? _style;
   late String? _type;
-  String token = "";
+  String _id = "";
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
   final String _baseUrl = "10.0.2.2:3000";
@@ -35,7 +35,7 @@ class _MusicProjectState extends State<MusicProject> {
   void gettoken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState((){
-      token = prefs.getString("key")!;
+      _id = prefs.getString("key")!;
     });
   }
   @override
@@ -126,7 +126,7 @@ class _MusicProjectState extends State<MusicProject> {
                         "Nom" : _nom,
                         "type" : _type,
                         "style" : _style,
-                        "token" : token,
+                        "user" : _id,
 
                       };
 
@@ -143,7 +143,7 @@ class _MusicProjectState extends State<MusicProject> {
                       request.fields['Nom']=_nom.toString();
                       request.fields['type']=_type.toString();
                       request.fields['style']=_style.toString();
-                      request.fields['token']= token;
+                      request.fields['user']= _id;
                       request.files.add(file);
                       body: json.encode(userData);
                       request.headers.addAll({"Content-Type": "multipart/form-data",
