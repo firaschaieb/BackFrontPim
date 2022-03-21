@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router()
 const UserController = require("../controllers/user-controller")
-const upload = require('../middlewares/storage');
+//const upload = require('../middlewares/storage');
 const User = require("../models/User");
 const multer = require('../multer-config')
 

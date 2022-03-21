@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const bandController = require("../controllers/band-controlller")
-const upload = require('../middlewares/storage');
+//const upload = require('../middlewares/storage');
 
 const multer = require('../multer-config')
 

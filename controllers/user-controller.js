@@ -66,7 +66,7 @@ exports.register = async (req, res) => {
     nouveauUser.save();
 
     const token = jwt.sign({ nouveauUser:nouveauUser }, config.token_secret, {
-      expiresIn: "36000000",
+     // expiresIn: "36000000",
     });
 
    // doSendConfirmationEmail(email, token);
@@ -83,7 +83,9 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-
+  console.log("-----------------------------------------")
+//console.log(user._id)
+const user_id = user.id;
   if (user && (await bcypt.compare(password, user.password))) {
     const token = jwt.sign({ user: user }, config.token_secret, {
      
@@ -91,10 +93,10 @@ exports.login = async (req, res) => {
 
     if (user.isVerified) {
       console.log("1111111")
-      res.status(200).send({ token, message: "Success" });
+      res.status(200).send({ user_id, message: "Success" });
       
     } else {
-      res.status(200).send({ user, message: "Email not verified" });
+      res.status(200).send({ user_id, message: "Email not verified" });
     }
   } else {
     res.status(403).send({ message: "Password or email incorrect" });

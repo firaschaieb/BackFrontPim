@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const TrackController = require("../controllers/track-controller")
-const upload = require('../middlewares/storage');
+//const upload = require('../middlewares/storage');
 const multer = require('../multer-config')
 
 
@@ -28,5 +28,11 @@ router.get("/get-branch-of/:id",TrackController.branch_of)
 //      ta3malek filter kima t7eb just zid & esm el param = val    --->       Localhost:3000/api/track/track-filter?musicProject=621f81c23395fb8a838d6e86
 
 router.get("/track-filter",TrackController.my_branch_in)
+
+
+
+router.post("/mix",multer,TrackController.mix)
+
+
 
 module.exports = router

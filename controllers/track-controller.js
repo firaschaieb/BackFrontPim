@@ -109,6 +109,37 @@ exports.addMusicTr = async (req, res, next) => {
   }catch{
     console.log(err)
   }
-  console.log(track)
+  //console.log(track)
   res.send({ track });
+};
+
+//----------------------------------------------------------------
+
+//              test mixing
+
+
+exports.mix = async (req, res, next) => {
+  //var datatosend ;
+
+  //const python = spawn('python3',['mix.py']     );
+  console.log(req.body._id)
+  const track = await Track.findOne({ _id: req.body._id });
+  console.log(req.body._id)
+  const track2 = await Track.findOne({ _id: req.body._id2 });
+  var spawn = require("child_process").spawn;
+console.log(track.MusicTr[0])
+	var process  = spawn('python',["./mixing/mix.py",track.MusicTr[0],track2.MusicTr[0],req.body.nb]);
+  console.log(req.body.nb)
+  //track.MusicTr.unshift(`${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`)
+	process.stdout.on('data',function(data){
+
+
+		console.log(`stdout:${data}`);
+	});
+  process.stderr.on('data',function(data){
+
+    console.log(`stderr:${data}`);
+	});
+
+
 };
