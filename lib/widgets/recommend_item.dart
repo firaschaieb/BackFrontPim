@@ -13,7 +13,7 @@ class RecommendItem extends StatefulWidget {
   final String _id;
 
 
-  RecommendItem(this._Nom, this._style, this._type, this._image, this._id);
+  RecommendItem(this._Nom, this._style, this._type,  this._id,this._image);
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
 
   @override
@@ -29,12 +29,14 @@ class _RecommendItemState extends State<RecommendItem> {
       onTap:  () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
 
+
         prefs.setString("Nom", widget._Nom);
         prefs.setString("style", widget._style);
         prefs.setString("type", widget._type);
         prefs.setString("photo", widget._image);
+
         prefs.setString("_id", widget._id );
-        Navigator.pushNamed(context, "/TrackH");
+        Navigator.pushNamed(context, "/THome");
         //print("111111111111111111");
       },
       child: Container(
@@ -53,16 +55,16 @@ class _RecommendItemState extends State<RecommendItem> {
               ),
             ],
           ),
+
           child: Row(
 
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
-              Image.network(widget._image,
-                width: 40,
-                height: 70,
-              ),
+              Expanded(child: Container(
+                  margin: const EdgeInsets.fromLTRB(10, 10, 20, 10),
+                  child: Image.network(widget._image,
+                      )),),
               SizedBox(width: 10,),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,7 +107,7 @@ class rec {
   final String image;
   final String id;
 
-  rec(this.Nom, this.style, this.type, this.id, this.image);
+  rec(this.Nom, this.style, this.type,this.image,this.id);
 
   @override
   String toString() {

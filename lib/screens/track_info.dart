@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
 class TrackInfo extends StatefulWidget {
 
   final String _Nom;
@@ -22,6 +24,8 @@ class TrackInfo extends StatefulWidget {
 }
 
 class _TrackInfoState extends State<TrackInfo> {
+  final ImagePicker _picker = ImagePicker();
+  PickedFile? _imageFile;
   String musicProject = "";
   final String _baseUrl = "10.0.2.2:3000";
   @override
@@ -100,12 +104,84 @@ print(widget._Nom);
               ],
             ),
 
+           Row(
+             children:[
+             const SizedBox(
+               height: 50,
+             ),
+             ],
+           ),
+            Expanded(child: Column()),
+           Column(
+             mainAxisAlignment: MainAxisAlignment.end,
+             crossAxisAlignment: CrossAxisAlignment.end,
+               children: [
 
+                 ElevatedButton(
+                   child: const Text("ADD TRACK"),
+                   onPressed: () async {
+                     children: <Widget>[
+                       Text(
+                         "Choose Profile photo",
+                         style: TextStyle(
+                           fontSize: 20.0,
+                         ),
+                       ),
+                       SizedBox(
+                         height: 20,
+                       ),
+                       Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                         FlatButton.icon(
+                           icon: Icon(Icons.image),
+                           onPressed: () {
+                             takePhoto(ImageSource.gallery);
+                           },
+                           label: Text("Gallery"),
+                         ),
+                       ])
+                     ];
+                     var request = new http.MultipartRequest('PUT',Uri.http( _baseUrl,"/upload"));
+                     var stream = new http.ByteStream(_imageFile!.openRead());
+                     stream.cast();
+
+                     final file = await http.MultipartFile.fromPath('MusicTr', _imageFile!.path);
+                     request.files.add(file);
+                     request.headers.addAll({"Content-Type": "multipart/form-data",
+                     });
+                     var response = await request.send();
+                     if (response.statusCode == 201) {
+                       //Navigator.pushReplacementNamed(context, "/");
+                     }
+                     else {
+                       showDialog(
+                           context: context,
+                           builder: (BuildContext context) {
+                             return const AlertDialog(
+                               title: Text("Information"),
+                               content: Text(
+                                   "Une erreur s'est produite. Veuillez réessayer !"),
+                             );
+                           });
+                     }
+                   },
+                 ),
+               ],
+           ),
           ],
         ),
+
       ),
 
     );
+  }
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.getImage(
+      source: source,
+    );
+    setState(() {
+      _imageFile = pickedFile!;
+
+    });
   }
 }
 class Product1 {

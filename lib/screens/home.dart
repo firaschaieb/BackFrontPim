@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> {
 
     for(int i = 0; i < games.length; i++) {
       Map<String, dynamic> game = games[i];
-      _products.add(rec(game["Nom"], game["style"], game["type"], game["photo"],game["_id"],));
+      _products.add(rec(game["Nom"],game["style"],game["type"], game["photo"],  game["_id"],));
     }
 
     return true;
@@ -192,12 +192,13 @@ class _HomePageState extends State<HomePage> {
               SingleChildScrollView(
                 padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
                 scrollDirection: Axis.horizontal,
+
                 child:  Row(
+
                     children: List.generate(_products.length, (index) =>
                         Padding(
-
                             padding: const EdgeInsets.only(right: 10),
-                            child: RecommendItem(_products[index].Nom, _products[index].style, _products[index].type, _products[index].image,_products[index].id,)
+                            child: RecommendItem(_products[index].id,_products[index].image,_products[index].style,_products[index].Nom, _products[index].type,)
                         )
                     )
                 ),
