@@ -198,7 +198,7 @@ class _HomePageState extends State<HomePage> {
                     children: List.generate(_products.length, (index) =>
                         Padding(
                             padding: const EdgeInsets.only(right: 10),
-                            child: RecommendItem(_products[index].id,_products[index].image,_products[index].style,_products[index].Nom, _products[index].type,)
+                            child: RecommendItem(_products[index].Nom,_products[index].style, _products[index].type,_products[index].id,_products[index].image,)
                         )
                     )
                 ),

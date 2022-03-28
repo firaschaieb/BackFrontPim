@@ -3,6 +3,8 @@ import 'package:online_course/screens/musicProject_home.dart';
 import 'package:online_course/screens/track_home.dart';
 import 'package:online_course/screens/track_office.dart';
 import 'package:online_course/signin_signup/update.dart';
+
+import 'audio/audia_page.dart';
 import 'screens/root_app.dart';
 import 'theme/color.dart';
 import 'signin_signup/login.dart';
@@ -40,7 +42,11 @@ class MyApp extends StatelessWidget {
         },
         "/TrackH": (BuildContext context) {
           return const TrackHome();
-        },"/THome": (BuildContext context) {
+        },
+        "/AudioPage": (BuildContext context) {
+          return const AudioPage();
+        },
+        "/THome": (BuildContext context) {
           return const MyTrackHome();
         },
 

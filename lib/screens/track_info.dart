@@ -27,6 +27,21 @@ class _TrackInfoState extends State<TrackInfo> {
   final ImagePicker _picker = ImagePicker();
   PickedFile? _imageFile;
   String musicProject = "";
+  String _id = "";
+
+  void initState() {
+    PickedFile _imageFile;
+    super.initState();
+    getid();
+  }
+
+
+  void getid() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState((){
+      _id = prefs.getString("_id1")!;
+    });
+  }
   final String _baseUrl = "10.0.2.2:3000";
   @override
   Widget build(BuildContext context) {
@@ -43,10 +58,8 @@ class _TrackInfoState extends State<TrackInfo> {
           prefs.setString("MusicTr", widget._MusicTr );
           prefs.setString("musicProject", widget._musicProject );
           prefs.setString("_id1", widget._id );
-print("22222222222222");
-print(widget._Nom);
 
-          //Navigator.pushNamed(context, "/Track");
+          Navigator.pushNamed(context, "/AudioPage");
         },
 
         child: Row(
@@ -113,38 +126,37 @@ print(widget._Nom);
            ),
             Expanded(child: Column()),
            Column(
+
              mainAxisAlignment: MainAxisAlignment.end,
              crossAxisAlignment: CrossAxisAlignment.end,
+               mainAxisSize: MainAxisSize.min,
                children: [
+                 ElevatedButton(
+
+                   child: const Text("Choose TRACK"),
+                   onPressed: () async {
+                     showModalBottomSheet(
+                       context: context,
+                       builder: ((builder) => bottomSheet()),
+                     );
+                   },
+                   style: ElevatedButton.styleFrom(padding: EdgeInsets.fromLTRB(20, 0, 20, 0),),
+
+                 ),
+                 const SizedBox(
+                   height: 20,
+                 ),
 
                  ElevatedButton(
+                   style: ElevatedButton.styleFrom(padding: EdgeInsets.fromLTRB(30, 0, 30, 0),),
                    child: const Text("ADD TRACK"),
                    onPressed: () async {
-                     children: <Widget>[
-                       Text(
-                         "Choose Profile photo",
-                         style: TextStyle(
-                           fontSize: 20.0,
-                         ),
-                       ),
-                       SizedBox(
-                         height: 20,
-                       ),
-                       Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                         FlatButton.icon(
-                           icon: Icon(Icons.image),
-                           onPressed: () {
-                             takePhoto(ImageSource.gallery);
-                           },
-                           label: Text("Gallery"),
-                         ),
-                       ])
-                     ];
-                     var request = new http.MultipartRequest('PUT',Uri.http( _baseUrl,"/upload"));
+                     var request = new http.MultipartRequest('PUT',Uri.http( _baseUrl,"/api/track/addMusicTr"));
                      var stream = new http.ByteStream(_imageFile!.openRead());
                      stream.cast();
 
-                     final file = await http.MultipartFile.fromPath('MusicTr', _imageFile!.path);
+                     final file = await http.MultipartFile.fromPath('photos', _imageFile!.path);
+                     request.fields['_id']= _id;
                      request.files.add(file);
                      request.headers.addAll({"Content-Type": "multipart/form-data",
                      });
@@ -172,6 +184,42 @@ print(widget._Nom);
 
       ),
 
+    );
+  }
+  Widget bottomSheet() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Choose Track",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+
+            FlatButton.icon(
+              icon: Icon(Icons.image),
+              onPressed: () {
+                takePhoto(ImageSource.gallery);
+              },
+              label: Text("Gallery"),
+            ),
+          ])
+        ],
+      ),
     );
   }
   void takePhoto(ImageSource source) async {

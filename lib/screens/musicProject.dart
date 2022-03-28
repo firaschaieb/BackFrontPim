@@ -30,9 +30,9 @@ class _MusicProjectState extends State<MusicProject> {
   void initState() {
     PickedFile _imageFile;
     super.initState();
-    gettoken();
+    get();
   }
-  void gettoken() async {
+  void get() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState((){
       _id = prefs.getString("key")!;

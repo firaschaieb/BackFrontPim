@@ -5,10 +5,21 @@ import 'package:online_course/screens//app_colors.dart' as AppColors;
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as Path;
 import 'audio_file.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class DetailAudioPage extends StatefulWidget {
-  final booksData;
-  final int index;
-  const DetailAudioPage({required Key key, this.booksData, required this.index}) : super(key: key);
+  final String _Nom;
+  final String _instrument;
+  final String _key;
+  final String _measure;
+  final String _tempo;
+  final String _MusicTr;
+  final String _musicProject;
+
+  final String _id;
+
+
+  DetailAudioPage(this._Nom, this._instrument, this._key, this._measure,
+      this._tempo, this._MusicTr, this._musicProject, this._id);
 
   @override
   _DetailAudioPageState createState() => _DetailAudioPageState();
@@ -16,22 +27,61 @@ class DetailAudioPage extends StatefulWidget {
 
 class _DetailAudioPageState extends State<DetailAudioPage> {
   late AudioPlayer advancedPlayer;
-
+  String Nomm = "";
+  String instrument = "";
+  String MusicTr = "";
   @override
   void initState(){
     super.initState();
     advancedPlayer= AudioPlayer();
-  }
 
+
+  }
+  void getNom() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState((){
+      Nomm = prefs.getString("Nom")!;
+    });
+  }
+  void getinstrument() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState((){
+      instrument = prefs.getString("instrument")!;
+    });
+  }
+  void getMusicTr() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState((){
+      MusicTr = prefs.getString("MusicTr")!;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final double screenHeight=MediaQuery.of(context).size.height;
     final double screenWidth=MediaQuery.of(context).size.width;
 
+
     return Scaffold(
+
       backgroundColor: AppColors.audioBluishBackground,
-      body: Stack(
+      body: Expanded(
+         child : Stack(
+
         children: [
+          InkWell(
+            onTap: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+
+              prefs.setString("Nom", widget._Nom);
+              prefs.setString("instrument", widget._instrument);
+              prefs.setString("key", widget._key);
+              prefs.setString("measure", widget._measure);
+              prefs.setString("tempo", widget._tempo);
+              prefs.setString("MusicTr", widget._MusicTr );
+              prefs.setString("musicProject", widget._musicProject );
+              prefs.setString("_id1", widget._id );
+
+            },),
           Positioned(
               top:0,
               left: 0,
@@ -39,7 +89,6 @@ class _DetailAudioPageState extends State<DetailAudioPage> {
               height: screenHeight/3,
               child: Container(
                   color:AppColors.audioBlueBackground
-
               )),
           Positioned(
               top:0,
@@ -69,25 +118,27 @@ class _DetailAudioPageState extends State<DetailAudioPage> {
               top: screenHeight*0.2,
               height: screenHeight*0.36,
               child: Container(
+
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     color:Colors.white,
 
                   ),
                   child:Column(
+
                     children: [
                       SizedBox(height: screenHeight*0.1,),
-                      Text(this.widget.booksData[this.widget.index]["title"],
+                      Text(widget._Nom,
                         style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             fontFamily: "Avenir"
                         ),
                       ),
-                      Text(this.widget.booksData[this.widget.index]["text"], style:TextStyle(
+                      Text(widget._instrument, style:TextStyle(
                           fontSize: 20
                       ),),
-                      AudioFile(advancedPlayer:advancedPlayer, audioPath:this.widget.booksData[this.widget.index]["audio"]),
+                      AudioFile(advancedPlayer:advancedPlayer, audioPath:widget._MusicTr),
                     ],
                   )
 
@@ -112,7 +163,7 @@ class _DetailAudioPageState extends State<DetailAudioPage> {
                         shape: BoxShape.circle,
                         border: Border.all(color:Colors.black, width: 2),
                         image:DecorationImage(
-                            image:AssetImage(this.widget.booksData[this.widget.index]["img"]),
+                            image:AssetImage("assets/images/logo.png"),
                             fit:BoxFit.cover
                         )
                     ),
@@ -123,6 +174,27 @@ class _DetailAudioPageState extends State<DetailAudioPage> {
           )
         ],
       ),
+      ),
     );
+  }
+}
+
+class Product2 {
+
+
+  final String Nom;
+  final String instrument;
+  final String key;
+  final String measure;
+  final String tempo;
+  final String MusicTr;
+  final String musicProject;
+  final String id;
+
+  Product2( this.Nom, this.instrument, this.key, this.measure, this.tempo, this.MusicTr, this.musicProject,this.id);
+
+  @override
+  String toString() {
+    return 'Product1{Nom: $Nom, instrument: $instrument, key: $key, measure: $measure, tempo: $tempo, MusicTr: $MusicTr, musicProject: $musicProject, id: $id}';
   }
 }
