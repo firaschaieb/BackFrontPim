@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'signup.dart';
+import 'reset_password.dart';
 import 'package:http/http.dart' as http;
 import 'package:sqflite/sqflite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,26 +26,25 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: Form(
+      body:Container(
+        decoration: BoxDecoration(
+        image: DecorationImage(
+        image: AssetImage("assets/images/background.jpg"),
+    fit: BoxFit.cover,
+    ),
+    ),
+    child: Form(
         key: _keyForm,
         child:ListView(children: [
           const SizedBox(
-            width: 20,
+            width: 30,
           ),
 
-          const Text(
-            "Music Hub",
-            style: TextStyle(
-                fontSize: 50,
-                color: Colors.blueGrey
-            ),
-            textAlign: TextAlign.center,
 
-          ),
           Container(
               width: double.infinity,
               margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Image.asset("assets/images/logo.png",
+              child: Image.asset("assets/images/logo2.png",
                   width: 215, height: 380)),
 
           Container(
@@ -175,13 +175,16 @@ class _LoginState extends State<Login> {
                 child:
                 Text("Cliquez ici",
                     style: TextStyle(color: Colors.orangeAccent),
+
                     textDirection: TextDirection.ltr),
+
               ),
+
             ],
           )
         ]),
       ),
-
+      )
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'login.dart';
 import 'package:image_picker/image_picker.dart';
 //import 'package:flutter/src/painting/image_provider.dart';
 import 'dart:io';
@@ -30,33 +31,56 @@ class _SignupState extends State<Signup> {
   }
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepOrangeAccent,
-        title: const Center(child: Text('SignUp')),
-      ),
-      body: Form(
+
+      body:Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/background.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Form(
         key: _keyForm,
+
         child: ListView(
           children: [
+            Container(
+              margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+              child:IconButton (
+                alignment: Alignment.topLeft,
+                    icon: Icon(Icons.arrow_back),
+                iconSize: 60,
+                  color: Colors.deepOrange,
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
+                  },
+                ),
+            ),
+            SizedBox(
+              height: 70,
+            ),
             imageProfile(),
             SizedBox(
-              height: 20,
+              height: 40,
             ),
+
             Container(
               margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
               child: TextFormField(
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "FirstName"),
+                    border: OutlineInputBorder(), labelText: "Username"),
                 onSaved: (String? value) {
                   _username = value;
                 },
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return "firstname ne doit pas etre vide";
+                    return "username ne doit pas etre vide";
                   }
                   else if (value.length < 5) {
-                    return "firstname doit avoir au moins 5 caractères";
+                    return "username doit avoir au moins 5 caractères";
                   }
                   else {
                     return null;
@@ -114,10 +138,13 @@ class _SignupState extends State<Signup> {
             Container(
               margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
               child: ElevatedButton(
+
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.deepOrangeAccent, // background
+
+                  primary: Colors.transparent, // background
                 ),
-                child: const Text("Confirm !"),
+                child: const Text("Create" , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.orangeAccent)),
+
                 onPressed: ()  async {
                   if(_keyForm.currentState!.validate()) {
                     _keyForm.currentState!.save();
@@ -162,6 +189,7 @@ class _SignupState extends State<Signup> {
           ],
         ),
       ),
+      )
     );
 
   }
@@ -174,8 +202,9 @@ class _SignupState extends State<Signup> {
           children: <Widget>[
         CircleAvatar(
           radius: 80.0,
+         backgroundColor: Colors.white,
          backgroundImage: _imageFile == null?
-         AssetImage("assets/images/logo.png") as ImageProvider : FileImage(File(_imageFile!.path))
+         AssetImage("assets/images/unknown.png") as ImageProvider : FileImage(File(_imageFile!.path))
         ),
         Positioned(
           bottom: 20.0,
