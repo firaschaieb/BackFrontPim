@@ -42,27 +42,38 @@ class _MusicProjectState extends State<MusicProject> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: AppBar(
-        title: const Text("creatMusicProject"),
-      ),
+
+
     body: Form(
       key: _keyForm,
       child: ListView(
           children: [
+            Container(
+                width: double.infinity,
+                margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Image.asset("assets/images/mptitle.png",
+                    width: 215, height: 150)),
             //Container(
                // width: double.infinity,
                // margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                 //child: Image.asset("assets/images/newP.jpg", width: 460, height: 215)
             //),
+
             imageProfile(),
             SizedBox(
-              height: 20,
+              height: 70,
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Name Of Project"),
+
+                decoration: InputDecoration(
+
+
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    labelText: "Name Of Project"),
                 onSaved: (String? value) {
                   _nom = value;
                 },
@@ -79,8 +90,10 @@ class _MusicProjectState extends State<MusicProject> {
             Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Style"),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ), labelText: "Style"),
                 onSaved: (String? value) {
                   _style = value;
                 },
@@ -97,8 +110,10 @@ class _MusicProjectState extends State<MusicProject> {
             Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Type"),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ), labelText: "Type"),
                 onSaved: (String? value) {
                   _type = value;
                 },
@@ -116,6 +131,15 @@ class _MusicProjectState extends State<MusicProject> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(15.0),
+                      ),
+                      padding: EdgeInsets.all(14),
+                      primary: Colors.black38  ,
+                      side: BorderSide(width: 3.0, color: Colors.orangeAccent,)
+                    // background
+                  ),
                   child: const Text("Create"),
                   onPressed: () async {
                     if(_keyForm.currentState!.validate()) {
@@ -173,6 +197,15 @@ class _MusicProjectState extends State<MusicProject> {
                   width: 20,
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(15.0),
+                      ),
+                      padding: EdgeInsets.all(14),
+                      primary: Colors.black38 ,
+                      side: BorderSide(width: 3.0, color: Colors.orangeAccent,)
+                    // background
+                  ),
                   child: const Text("next"),
                   onPressed: () {
                     Navigator.pushNamed(context, "/music");
@@ -199,8 +232,9 @@ class _MusicProjectState extends State<MusicProject> {
           children: <Widget>[
             CircleAvatar(
                 radius: 80.0,
+                backgroundColor: Colors.white,
                 backgroundImage: _imageFile == null?
-                AssetImage("assets/images/logo.png") as ImageProvider : FileImage(File(_imageFile!.path))
+                AssetImage("assets/images/mp_icon.png") as ImageProvider : FileImage(File(_imageFile!.path))
             ),
             Positioned(
               bottom: 20.0,
@@ -239,7 +273,7 @@ class _MusicProjectState extends State<MusicProject> {
       child: Column(
         children: <Widget>[
           Text(
-            "Choose Profile photo",
+            "Choose Repository Image",
             style: TextStyle(
               fontSize: 20.0,
             ),

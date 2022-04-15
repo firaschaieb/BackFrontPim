@@ -91,7 +91,9 @@ class _RootAppState extends State<RootApp>  with TickerProviderStateMixin{
     return Scaffold(
       backgroundColor: appBgColor,
       bottomNavigationBar: getBottomBar(),
-      body: getBarPage()
+      body:
+      getBarPage()
+
     );
   }
 
@@ -111,7 +113,7 @@ class _RootAppState extends State<RootApp>  with TickerProviderStateMixin{
       height: 75,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: bottomBarColor,
+          color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(25), 
           topRight: Radius.circular(25)

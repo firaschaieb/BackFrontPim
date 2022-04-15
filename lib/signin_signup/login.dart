@@ -37,7 +37,7 @@ class _LoginState extends State<Login> {
         key: _keyForm,
         child:ListView(children: [
           const SizedBox(
-            width: 30,
+            height: 70,
           ),
 
 
@@ -45,13 +45,18 @@ class _LoginState extends State<Login> {
               width: double.infinity,
               margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Image.asset("assets/images/logo2.png",
-                  width: 215, height: 380)),
+                  width: 215, height: 200)),
+
+          const SizedBox(
+            height: 70,
+          ),
 
           Container(
-            margin: const EdgeInsets.fromLTRB(30, 10 , 30, 0 ),
+            margin: const EdgeInsets.fromLTRB(  30, 0 , 30, 0 ),
             child: TextFormField(
+              keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: "Username"),
+                  border: OutlineInputBorder(), labelText: "Email"),
               onSaved: (String? value) {
                 _username = value;
               },
@@ -68,8 +73,11 @@ class _LoginState extends State<Login> {
               },
             ),
           ),
+          const SizedBox(
+            height: 15,
+          ),
           Container(
-            margin: const EdgeInsets.fromLTRB(30, 20, 30, 20 ),
+            margin: const EdgeInsets.fromLTRB(30, 0 , 30, 0 ),
             child: TextFormField(
               obscureText: true,
               decoration: const InputDecoration(
@@ -90,8 +98,11 @@ class _LoginState extends State<Login> {
               },
             ),
           ),
+          const SizedBox(
+            height: 30,
+          ),
           Container(
-            margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+            margin: const EdgeInsets.fromLTRB(130, 0, 130, 0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: Colors.deepOrangeAccent, // background
@@ -152,12 +163,12 @@ class _LoginState extends State<Login> {
           ),
 
           Container(
-            margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+            margin: const EdgeInsets.fromLTRB(130, 0, 130, 0),
             child:ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.blueGrey, // background
+                primary: Colors.teal, // background
               ),
-              child: const Text("Créer un compte"),
+              child: const Text("Joindrez-nous"),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Signup()));
               },
@@ -167,14 +178,15 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               SizedBox(
-                height: 50,
+                height: 90,
               ),
-              Text("Mot de passe oublié ?  "),
+              Text("Mot de passe oublié ?  ",
+                  style: TextStyle(fontSize: 15)),
               Center(
 
                 child:
                 Text("Cliquez ici",
-                    style: TextStyle(color: Colors.orangeAccent),
+                    style: TextStyle(color: Colors.orangeAccent,fontSize: 15),
 
                     textDirection: TextDirection.ltr),
 

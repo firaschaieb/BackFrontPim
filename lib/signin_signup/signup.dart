@@ -48,23 +48,24 @@ class _SignupState extends State<Signup> {
         child: ListView(
           children: [
             Container(
-              margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-              child:IconButton (
-                alignment: Alignment.topLeft,
-                    icon: Icon(Icons.arrow_back),
-                iconSize: 60,
-                  color: Colors.deepOrange,
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
-                  },
-                ),
-            ),
+                width: double.infinity,
+                margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Image.asset("assets/images/register.png",
+                    width: 215, height: 150)),
+
+
+
+
+
             SizedBox(
-              height: 70,
+              height: 30,
             ),
+
+
+
             imageProfile(),
             SizedBox(
-              height: 40,
+              height: 30,
             ),
 
             Container(
@@ -134,16 +135,25 @@ class _SignupState extends State<Signup> {
               ),
             ),
 
-
+            SizedBox(
+              height: 20,
+            ),
             Container(
-              margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+              margin: const EdgeInsets.fromLTRB(90, 0, 90, 0),
               child: ElevatedButton(
 
                 style: ElevatedButton.styleFrom(
-
-                  primary: Colors.transparent, // background
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(15.0),
+                  ),
+                  padding: EdgeInsets.all(14),
+                  primary: Colors.white70  ,
+                    side: BorderSide(width: 3.0, color: Colors.orangeAccent,)
+                  // background
                 ),
-                child: const Text("Create" , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.orangeAccent)),
+
+
+                child: const Text("Enregistrer" , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.orange)),
 
                 onPressed: ()  async {
                   if(_keyForm.currentState!.validate()) {
@@ -186,8 +196,25 @@ class _SignupState extends State<Signup> {
                 },
               ),
             ),
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+              margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+              child:IconButton (
+                alignment: Alignment.bottomLeft,
+                icon: Icon(Icons.arrow_back),
+                iconSize: 60,
+                color: Colors.deepOrange,
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Login()));
+                },
+              ),
+            ),
           ],
+
         ),
+
       ),
       )
     );
