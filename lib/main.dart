@@ -11,6 +11,7 @@ import 'signin_signup/login.dart';
 import 'signin_signup/signup.dart';
 import 'signin_signup/update.dart';
 import 'screens/track.dart';
+import 'screens/splashScreen.dart';
 void main() {
   runApp(MyApp());
 }
@@ -26,7 +27,10 @@ class MyApp extends StatelessWidget {
       ),
       //home: RootApp(),
       routes: {
-        "/": (BuildContext context) {
+    "/": (BuildContext context) {
+          return SplashScreen();
+        },
+        "/login": (BuildContext context) {
           return const Login();
         },
         "/home": (BuildContext context) {
@@ -52,6 +56,9 @@ class MyApp extends StatelessWidget {
 
         "/update": (BuildContext context) {
           return const UpdateUser();
+        },
+        "/trackoffice": (BuildContext context) {
+          return const MyTrackHome();
         },
 
       },

@@ -25,8 +25,8 @@ class _RootAppState extends State<RootApp>  with TickerProviderStateMixin{
       "page" : HomePage(),
     },
     {
-      "icon" : "assets/icons/search.svg",
-      "active_icon" : "assets/icons/search.svg",
+      "icon" : "assets/icons/play1.svg",
+      "active_icon" : "assets/icons/play1.svg",
       "page" : MusicProject(),
     },
     {

@@ -204,7 +204,7 @@ class _AccountPageState extends State<AccountPage> {
                     SharedPreferences preferences =
                         await SharedPreferences.getInstance();
                     await preferences.clear();
-                    Navigator.pushNamed(context, "/");
+                    Navigator.pushNamed(context, "/login");
                   },
                 ),
               ]

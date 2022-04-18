@@ -40,6 +40,7 @@ class _SignupState extends State<Signup> {
           image: DecorationImage(
             image: AssetImage("assets/images/background.jpg"),
             fit: BoxFit.cover,
+
           ),
         ),
         child: Form(
@@ -71,8 +72,10 @@ class _SignupState extends State<Signup> {
             Container(
               margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
               child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Username"),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ), labelText: "Username"),
                 onSaved: (String? value) {
                   _username = value;
                 },
@@ -93,8 +96,10 @@ class _SignupState extends State<Signup> {
               margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
               child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Email"),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ), labelText: "Email"),
                 onSaved: (String? value) {
                   _email = value;
                 },
@@ -116,8 +121,10 @@ class _SignupState extends State<Signup> {
               margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
               child: TextFormField(
                 obscureText: true,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Mot de passe"),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ),labelText: "Mot de passe"),
                 onSaved: (String? value) {
                   _password = value;
                 },

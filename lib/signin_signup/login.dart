@@ -55,8 +55,10 @@ class _LoginState extends State<Login> {
             margin: const EdgeInsets.fromLTRB(  30, 0 , 30, 0 ),
             child: TextFormField(
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: "Email"),
+              decoration:  InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(40),
+                  ), labelText: "Email"),
               onSaved: (String? value) {
                 _username = value;
               },
@@ -79,9 +81,12 @@ class _LoginState extends State<Login> {
           Container(
             margin: const EdgeInsets.fromLTRB(30, 0 , 30, 0 ),
             child: TextFormField(
-              obscureText: true,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: "Mot de passe"),
+
+             obscureText: true,
+              decoration:  InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(40),
+                  ), labelText: "Mot de passe"),
               onSaved: (String? value) {
                 _password = value;
               },

@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'musicProject_home.dart';
 
 class MusicProject extends StatefulWidget {
 
@@ -208,7 +209,7 @@ class _MusicProjectState extends State<MusicProject> {
                   ),
                   child: const Text("next"),
                   onPressed: () {
-                    Navigator.pushNamed(context, "/music");
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MusicHome()));
                   },
                 )
               ],

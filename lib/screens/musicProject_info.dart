@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 class MusicInfo extends StatefulWidget {
   final String _Nom;
   final String _style;
@@ -9,19 +10,16 @@ class MusicInfo extends StatefulWidget {
   final String _image;
   final String _id;
 
-
   MusicInfo(this._Nom, this._style, this._type, this._id, this._image);
 
   @override
   State<MusicInfo> createState() => _MusicInfoState();
 }
+
 final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+
 class _MusicInfoState extends State<MusicInfo> {
-
   final String _baseUrl = "10.0.2.2:3000";
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -34,34 +32,61 @@ class _MusicInfoState extends State<MusicInfo> {
           prefs.setString("style", widget._style);
           prefs.setString("type", widget._type);
           prefs.setString("photo", widget._image);
-          prefs.setString("_id", widget._id );
+          prefs.setString("_id", widget._id);
           Navigator.pushNamed(context, "/THome");
           //print("111111111111111111");
         },
-
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Container(
+                margin: const EdgeInsets.fromLTRB(10, 10, 20, 10),
+                child: Image.network(widget._image, width: 120, height: 120)),
+            const SizedBox(
+              height: 10,
+            ),
+            Column(
+              children: [
+                Text(widget._Nom,
+                    style: TextStyle(
+                        color: Colors.deepOrange, fontWeight: FontWeight.bold),
+                    textScaleFactor: 2),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  widget._style,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(widget._type),
+                const SizedBox(
+                  width: 200,
+                ),
+              ],
+            ),
+
             InkWell(
-                child: const Icon(Icons.restore_from_trash_rounded, size: 50,color: Colors.teal),
+                child: Icon(Icons.restore_from_trash_outlined,
+                    size: 30, color: Colors.deepOrange),
                 onTap: () async {
                   Map<String, String> headers = {
                     "Content-Type": "application/json; charset=UTF-8"
                   };
                   Map<String, dynamic> userData = {
                     "_id": widget._id,
-
                   };
-                  http.delete(
-                    Uri.http(_baseUrl, "/api/musicproject/"), headers: headers,body: json.encode(userData))
+                  http
+                      .delete(Uri.http(_baseUrl, "/api/musicproject/"),
+                          headers: headers, body: json.encode(userData))
                       .then((http.Response response) {
                     if (response.statusCode == 201) {
-                      final body =jsonDecode(response.body);
+                      final body = jsonDecode(response.body);
 
                       //Navigator.pushReplacementNamed(context, "/");
-                    }
-                    else {
+                    } else {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -73,39 +98,14 @@ class _MusicInfoState extends State<MusicInfo> {
                           });
                     }
                   });
-                }
-            ),
-            Container(
-                margin: const EdgeInsets.fromLTRB(10, 10, 20, 10),
-                child: Image.network(widget._image,
-                    width: 120, height: 120)),
-
-            const SizedBox(
-              height: 10,
-            ),
-            Column(
-              children: [
-                Text(widget._Nom,style:TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold), textScaleFactor: 2),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(widget._style,),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(widget._type),
-              ],
-            ),
-
+                }),
           ],
         ),
       ),
-
     );
-
   }
-
 }
+
 class Product {
   final String Nom;
   final String style;
