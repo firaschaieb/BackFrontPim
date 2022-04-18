@@ -29,16 +29,8 @@ class _MyTrackHomeState extends State<MyTrackHome> with SingleTickerProviderStat
           body: Column(
             children: [
 
-              Row(
-                children: [
-                  Container(
-                      margin: const EdgeInsets.only(left: 20),
-                      child: Text("WELCOME", style: TextStyle(fontSize: 30))
 
-                  )
-                ],
-              ),
-              SizedBox(height: 20,),
+
 
               Expanded(child: NestedScrollView(
                 controller: _scrollController,
@@ -69,9 +61,9 @@ class _MyTrackHomeState extends State<MyTrackHome> with SingleTickerProviderStat
                                 ]
                             ),
                             tabs: [
-                              AppTabs(color:AppColors.menu1Color, text:"PROJECT", key: ValueKey(1), ),
-                              AppTabs(color:AppColors.menu2Color, text:"ADD Track", key: ValueKey(2), ),
-                              AppTabs(color:AppColors.menu3Color, text:"Trending", key: ValueKey(3),),
+                              AppTabs(color:AppColors.menu1Color, text:"New", key: ValueKey(1), ),
+                              AppTabs(color:AppColors.menu2Color, text:"Track List", key: ValueKey(2), ),
+                              AppTabs(color:AppColors.menu3Color, text:"Favourite", key: ValueKey(3),),
                             ],
                           ),
                         ),

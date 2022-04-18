@@ -52,13 +52,20 @@ class _TrackState extends State<Track> {
             Container(
                 width: double.infinity,
                 margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                child: Image.asset("assets/images/newP.jpg", width: 460, height: 215)
+                child: Image.asset("assets/images/newtrack.png", width: 460)
+            ),
+            Container(
+                width: double.infinity,
+                margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                child: Image.asset("assets/images/track.png", width: 460)
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Name Of Track"),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ), labelText: "Name Of Track"),
                 onSaved: (String? value) {
                   _nom = value;
                 },
@@ -75,8 +82,10 @@ class _TrackState extends State<Track> {
             Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "instrument"),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ), labelText: "instrument"),
                 onSaved: (String? value) {
                   _instrument = value;
                 },
@@ -93,8 +102,10 @@ class _TrackState extends State<Track> {
             Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "key"),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ), labelText: "key"),
                 onSaved: (String? value) {
                   _key = value;
                 },
@@ -111,8 +122,10 @@ class _TrackState extends State<Track> {
             Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "measure"),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ), labelText: "measure"),
                 onSaved: (String? value) {
                   _measure = value;
                 },
@@ -129,8 +142,10 @@ class _TrackState extends State<Track> {
             Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "tempo"),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ), labelText: "tempo"),
                 onSaved: (String? value) {
                   _tempo = value;
                 },
@@ -147,8 +162,10 @@ class _TrackState extends State<Track> {
             Container(
               margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: TextFormField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), labelText: "MusicTr"),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ), labelText: "MusicTr"),
                 onSaved: (String? value) {
                   _MusicTr = value;
                 },
@@ -162,65 +179,104 @@ class _TrackState extends State<Track> {
                 },
               ),
             ),
-            Row(
+            Column(
+
+            children: [
+              Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  child: const Text("Create"),
-                  onPressed: () {
-                    if(_keyForm.currentState!.validate()) {
-                      _keyForm.currentState!.save();
 
-                      Map<String, dynamic> userData = {
-                        // "profilePicture": _username,
-                        "Nom" : _nom,
-                        "instrument" : _instrument,
-                        "key" : _key,
-                        "measure" : _measure,
-                        "tempo" : _tempo,
-                        "MusicTr" : _MusicTr,
-                        "user" : _id,
-                        "musicProject" : id
+                const SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child:IconButton (
+                    icon: Icon(Icons.attach_file_outlined),
+                    iconSize: 60,
+                    color: Colors.deepOrange,
+                    onPressed: () {
 
-                      };
-
-                      Map<String, String> headers = {
-                        "Content-Type": "application/json; charset=UTF-8"
-                      };
-                      print(_id);
-                      print(id);
-                      http.post(Uri.http(_baseUrl, "/api/track/"), headers: headers, body: json.encode(userData))
-                          .then((http.Response response) {
-                        if(response.statusCode == 201) {
-                          print(_id);
-                          print(id);
-
-                          //Navigator.pushReplacementNamed(context, "/");
-                        }
-                        else {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const AlertDialog(
-                                  title: Text("Information"),
-                                  content: Text("Une erreur s'est produite. Veuillez réessayer !"),
-                                );
-                              });
-                        }
-                      });
-                    }
-                  },
+                    },
+                  ),
                 ),
                 const SizedBox(
-                  width: 20,
+                  width: 10,
                 ),
-                ElevatedButton(
-                  child: const Text("Cancel"),
-                  onPressed: () {
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child:IconButton (
+                    icon: Icon(Icons.mic_none),
+                    iconSize: 60,
+                    color: Colors.blueGrey,
+                    onPressed: () {
 
-                  },
-                )
+                    },
+                  ),
+                ),
               ],
+            ),
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                               style: ElevatedButton.styleFrom(
+              shape: new RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(15.0),
+      ),
+        padding: EdgeInsets.all(14),
+        primary: Colors.white70  ,
+        side: BorderSide(width: 3.0, color: Colors.deepOrange,)
+      // background
+    ),
+
+
+    child: const Text("Enregistrer" , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.deepOrange)),
+                onPressed: () {
+                  if(_keyForm.currentState!.validate()) {
+                    _keyForm.currentState!.save();
+
+                    Map<String, dynamic> userData = {
+                      // "profilePicture": _username,
+                      "Nom" : _nom,
+                      "instrument" : _instrument,
+                      "key" : _key,
+                      "measure" : _measure,
+                      "tempo" : _tempo,
+                      "MusicTr" : _MusicTr,
+                      "user" : _id,
+                      "musicProject" : id
+
+                    };
+
+                    Map<String, String> headers = {
+                      "Content-Type": "application/json; charset=UTF-8"
+                    };
+                    print(_id);
+                    print(id);
+                    http.post(Uri.http(_baseUrl, "/api/track/"), headers: headers, body: json.encode(userData))
+                        .then((http.Response response) {
+                      if(response.statusCode == 201) {
+                        print(_id);
+                        print(id);
+
+                        //Navigator.pushReplacementNamed(context, "/");
+                      }
+                      else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const AlertDialog(
+                                title: Text("Information"),
+                                content: Text("Une erreur s'est produite. Veuillez réessayer !"),
+                              );
+                            });
+                      }
+                    });
+                  }
+                },
+              ),
+          ]
             )
           ],
         ),
